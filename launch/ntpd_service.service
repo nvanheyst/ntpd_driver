@@ -1,0 +1,15 @@
+[Unit]
+Description=NTPD ROS Service
+After=network.target ros.service
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/home/administrator/ntpd_ws/src/ntpd_driver/src/launch
+ExecStart=/bin/bash /home/administrator/ntpd_ws/src/ntpd_driver/src/launch/ntpd.sh
+Restart=on-failure
+Environment=ROS_MASTER_URI=http://localhost:11311
+Environment=ROS_IP=127.0.0.1
+
+[Install]
+WantedBy=multi-user.target
