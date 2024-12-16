@@ -1,6 +1,7 @@
 [Unit]
 Description=NTPD ROS Service
 After=network.target ros.service
+PartOf=ros.service
 
 [Service]
 Type=simple
@@ -10,6 +11,8 @@ ExecStart=/bin/bash /home/administrator/ntpd_ws/src/ntpd_driver/launch/ntpd.sh
 Restart=on-failure
 Environment=ROS_MASTER_URI=http://localhost:11311
 Environment=ROS_IP=127.0.0.1
+KillMode=control-group
+KillSignal=SIGINT
 
 [Install]
 WantedBy=multi-user.target
