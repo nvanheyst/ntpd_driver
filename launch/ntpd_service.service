@@ -1,7 +1,6 @@
 [Unit]
 Description=NTPD ROS Service
 After=network.target ros.service
-PartOf=ros.service
 
 [Service]
 Type=simple
