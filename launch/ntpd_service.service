@@ -5,8 +5,8 @@ After=network.target ros.service
 [Service]
 Type=simple
 User=root
-WorkingDirectory=/home/administrator/ntpd_ws/src/ntpd_driver/src/launch
-ExecStart=/bin/bash /home/administrator/ntpd_ws/src/ntpd_driver/src/launch/ntpd.sh
+WorkingDirectory=/home/administrator/ntpd_ws/src/ntpd_driver/launch
+ExecStart=/bin/bash /home/administrator/ntpd_ws/src/ntpd_driver/launch/ntpd.sh
 Restart=on-failure
 Environment=ROS_MASTER_URI=http://localhost:11311
 Environment=ROS_IP=127.0.0.1
