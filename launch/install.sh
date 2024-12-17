@@ -1,10 +1,13 @@
 #!/bin/bash
 
-# Get the current working directory (this will be the workspace)
-WORKDIR=$(pwd)
+# Get the current working directory (this will be the launch folder)
+LAUNCH_DIR=$(pwd)
+
+# Get the root of the workspace by going up four directories from the launch folder
+WORKDIR=$(dirname $(dirname $(dirname $(dirname $LAUNCH_DIR)))))
 
 # Create the run script in the launch folder
-RUN_SCRIPT="${WORKDIR}/src/ntpd_driver/launch/run_ntpd.sh"
+RUN_SCRIPT="${LAUNCH_DIR}/run_ntpd.sh"
 
 cat <<EOF > $RUN_SCRIPT
 #!/usr/bin/env bash
@@ -24,8 +27,8 @@ chmod +x $RUN_SCRIPT
 
 echo "Run script created at ${RUN_SCRIPT} and made executable."
 
-#Ensure binary file is executable
-chmod +x ~/ntpd_ws/devel/.private/ntpd_driver/lib/ntpd_driver/shm_driver
+# Ensure binary file is executable
+chmod +x ${WORKDIR}/devel/.private/ntpd_driver/lib/ntpd_driver/shm_driver
 
 # Create the systemd service file for ntpd_service
 cat <<EOF | sudo tee /etc/systemd/system/ntpd_service.service
@@ -36,8 +39,8 @@ After=network.target ros.service
 [Service]
 Type=simple
 User=root
-WorkingDirectory=${WORKDIR}/src/ntpd_driver/launch/
-ExecStart=/bin/bash ./run_ntpd.sh
+WorkingDirectory=${LAUNCH_DIR}
+ExecStart=/bin/bash ${LAUNCH_DIR}/run_ntpd.sh
 Restart=on-failure
 Environment=ROS_MASTER_URI=http://localhost:11311
 Environment=ROS_IP=127.0.0.1
@@ -58,4 +61,3 @@ sudo systemctl enable ntpd_service.service
 sudo systemctl start ntpd_service.service
 
 echo "Service ntpd_service.service has been installed and started successfully."
-
