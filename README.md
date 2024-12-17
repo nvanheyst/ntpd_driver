@@ -27,6 +27,17 @@ And then restart chrony service:
 
     sudo systemctl restart chrony.service 
 
+### enable passwordless sudo
+
+Edit sudoers file with:
+
+    sudo visudo
+
+Add or modify the %sudo line (consider more secure modifications as needed):
+
+    %sudo   ALL=(ALL:ALL) NOPASSWD: ALL
+ 
+
 Installation
 --------------------
 
