@@ -1,4 +1,4 @@
-#this file is just for reference now
+#this file is just for reference
 
 [Unit]
 Description=NTPD ROS Service
