@@ -36,15 +36,22 @@ Edit sudoers file with:
 Add or modify the %sudo line (consider more secure modifications as needed):
 
     %sudo   ALL=(ALL:ALL) NOPASSWD: ALL
+
+An example of a more secure workflow would be to use "%sudo	ALL=NOPASSWD: /bin/date" instead, but then the systemctl commands from the install script will need to be removed and run manually. 
  
 
 Installation
 --------------------
 
+Clone the repo:
+
      cd ~
      mkdir -p ntpd_ws/src/
      git clone https://github.com/nvanheyst/ntpd_driver.git
-     cd ..
+     
+Build the repo     
+
+     cd ~/ntpd_ws/
      catkin build
 
 Ensure install script is executable and run install script:
@@ -67,11 +74,3 @@ check that time sync was fixed:
 Additional tools:
      $sudo journalctl -u ntpd_service.service
      $sudo chronyc sourcestats and/or $sudo chronyc tracking
-
-Testing notes
---------------------
-
-- this was only tested on a Husky Observer
-- the robot had password-less sudo enabled
-- time was manually changed to be out of sync with $timedatectl set-time ‘YYYY-MM-DD HH:MM:SS’
-
