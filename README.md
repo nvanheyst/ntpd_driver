@@ -35,7 +35,8 @@ Installation
      git clone https://github.com/nvanheyst/ntpd_driver.git
      cd ..
      catkin build
-     
+
+
      chmod +x ~/ntpd_ws/devel/.private/ntpd_driver/lib/ntpd_driver/shm_driver
      cd ~/ntpd_ws/src/ntpd_driver/launch/
      chmod +x ntpd.sh
@@ -45,15 +46,23 @@ Installation
 Validation
 --------------------
 
+check service status:
+
      sudo systemctl status ntpd_service.service
-     sudo journalctl -u ntpd_service.service
+     
+check that time sync was fixed:
+     
      rostopic echo /sensors/gps_0/fix --filter "print(rospy.get_time()-m.header.stamp.to_sec())"
-     sudo chronyc sourcestats and/or sudo chronyc tracking
+
+Additional tools:
+     $sudo journalctl -u ntpd_service.service
+     $sudo chronyc sourcestats and/or sudo chronyc tracking
 
 
-_Notes on testing
+Testing notes
+--------------------
 
 - this was only tested on a Husky Observer
 - the robot had passwordless sudo enabled
-- time was manually changed to be out of sync with $timedatectl set-time ‘YYYY-MM-DD HH:MM:SS’_
+- time was manually changed to be out of sync with $timedatectl set-time ‘YYYY-MM-DD HH:MM:SS’
 
