@@ -1,29 +1,20 @@
 ntpd\_driver
 ============
 
-This ROS node listen `sensor_msgs/TimeReference` and send it to ntpd via SHM (like gpsd).
+This package exists as a fix for time sync drift on ROS1 Noetic Clearpath Robotics systems using SwiftNav Duro modules. This shouldn't be an issue if a robot is connected to the internet, but if a robot is only used with a base station this can work to fix the sync issue. If you have a Clearpath platform with a Fixposition Vision-RTK-2 / Movella XVN and have a time drift issue, that sensor has an NTP server feature.
 
-Parameter `~/shm_unit` define SHM unit (in ntp.conf) (int, default: 2).
-Parameter `~/fixup_date` enable/disable date fixup (bool, default: false)
+The ntpd_driver package was forked to provide: 
+- tested instructions specifically for Clearpath platforms
+- simpified deployment with a systemd service
 
+First to check if the platform has a time sync drift issue run this command and it will output a difference between the system software clock and the gps if there is any:
+
+    rostopic echo /sensors/gps_0/fix --filter "print(rospy.get_time()-m.header.stamp.to_sec())"
+
+If there is no output then there is no drift, otherwise the difference will be outputed in seconds. 
 
 System configuration
 --------------------
-
-### ntpd configuration
-
-Add this to `/etc/ntp.conf`:
-
-    ### GPS SHM driver
-    server 127.127.28.2 minpoll 4 maxpoll 4
-    fudge 127.127.28.2 time1 0.5 stratum 12 refid ROS
-
-And then restart ntp service.
-
-Run example:
-
-    rosrun ntpd_driver shm_driver _shm_unit:=2 _time_ref_topic:=/mavros/time_reference
-
 
 ### chrony configuration
 
@@ -32,21 +23,37 @@ Add this to `/etc/chrony/chrony.conf`:
     ### SHM driver
     refclock SHM 0 delay 0.5 refid ROS
 
-And then restart chrony service.
+And then restart chrony service:
 
-Run example:
+    sudo systemctl restart chrony.service 
 
-    rosrun ntpd_driver shm_driver _shm_unit:=0 _time_ref_topic:=/mavros/time_reference
+Installation
+--------------------
+
+     cd ~
+     mkdir -p ntpd_ws/src/
+     git clone https://github.com/nvanheyst/ntpd_driver.git
+     cd ..
+     catkin build
+     
+     chmod +x ~/ntpd_ws/devel/.private/ntpd_driver/lib/ntpd_driver/shm_driver
+     cd ~/ntpd_ws/src/ntpd_driver/launch/
+     chmod +x ntpd.sh
+     chmod +x install.sh
+     ./install.sh 
+     
+Validation
+--------------------
+
+     sudo systemctl status ntpd_service.service
+     sudo journalctl -u ntpd_service.service
+     rostopic echo /sensors/gps_0/fix --filter "print(rospy.get_time()-m.header.stamp.to_sec())"
+     sudo chronyc sourcestats and/or sudo chronyc tracking
 
 
-### Date fixup configuration (sudo)
+_Notes on testing
 
-On my Raspberry Pi 2 ntpd reject SHM data if system date is not set (e.g. JAN 1970).
-To fix that `shm_driver` now can set system time if it unset.
-
-For setting date program requires root privileges, so used `sudo`.
-
-Add this to `/etc/sudoers` (using `visudo`):
-
-    %sudo	ALL=NOPASSWD: /bin/date
+- this was only tested on a Husky Observer
+- the robot had passwordless sudo enabled
+- time was manually changed to be out of sync with $timedatectl set-time ‘YYYY-MM-DD HH:MM:SS’_
 
