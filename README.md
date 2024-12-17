@@ -36,9 +36,8 @@ Installation
      cd ..
      catkin build
 
-Ensure files are executable and run install script:
+Ensure install script is executable and run install script:
 
-     chmod +x ~/ntpd_ws/devel/.private/ntpd_driver/lib/ntpd_driver/shm_driver
      cd ~/ntpd_ws/src/ntpd_driver/launch/
      chmod +x install.sh
      ./install.sh 
