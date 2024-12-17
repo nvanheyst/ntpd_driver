@@ -40,7 +40,7 @@ Ensure install script is executable and run install script:
 
      cd ~/ntpd_ws/src/ntpd_driver/launch/
      chmod +x install.sh
-     ./install.sh 
+     sudo ./install.sh 
      
 Validation
 --------------------
