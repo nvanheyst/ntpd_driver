@@ -57,7 +57,6 @@ Additional tools:
      $sudo journalctl -u ntpd_service.service
      $sudo chronyc sourcestats and/or $sudo chronyc tracking
 
-
 Testing notes
 --------------------
 
