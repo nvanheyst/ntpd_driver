@@ -24,6 +24,8 @@ chmod +x $RUN_SCRIPT
 
 echo "Run script created at ${RUN_SCRIPT} and made executable."
 
+#Ensure binary file is executable
+chmod +x ~/ntpd_ws/devel/.private/ntpd_driver/lib/ntpd_driver/shm_driver
 
 # Create the systemd service file for ntpd_service
 cat <<EOF | sudo tee /etc/systemd/system/ntpd_service.service
