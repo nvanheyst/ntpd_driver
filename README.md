@@ -5,7 +5,7 @@ This package exists as a fix for time sync drift on ROS1 Noetic Clearpath Roboti
 
 The ntpd_driver package was forked to provide: 
 - tested instructions specifically for Clearpath platforms
-- simpified deployment with a systemd service
+- simpified deployment with a systemd service including an install script
 
 First to check if the platform has a time sync drift issue run this command and it will output a difference between the system software clock and the gps if there is any:
 
