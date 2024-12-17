@@ -55,13 +55,13 @@ check that time sync was fixed:
 
 Additional tools:
      $sudo journalctl -u ntpd_service.service
-     $sudo chronyc sourcestats and/or sudo chronyc tracking
+     $sudo chronyc sourcestats and/or $sudo chronyc tracking
 
 
 Testing notes
 --------------------
 
 - this was only tested on a Husky Observer
-- the robot had passwordless sudo enabled
+- the robot had password-less sudo enabled
 - time was manually changed to be out of sync with $timedatectl set-time ‘YYYY-MM-DD HH:MM:SS’
 
