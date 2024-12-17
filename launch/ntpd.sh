@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-#this file is just for reference now
+#this file is just for reference
 
 source /opt/ros/noetic/setup.bash
 source /home/administrator/ntpd_ws/devel/setup.bash
